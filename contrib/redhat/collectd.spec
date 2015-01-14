@@ -9,28 +9,16 @@
 # q: And how can I do that ?
 # a: By following these instructions, using mock:
 #
-# - install and configure mock (https://fedoraproject.org/wiki/Projects/Mock)
-#
-# - enable the EPEL repository (http://dl.fedoraproject.org/pub/epel/) in the
-#   configuration files for your target systems (/etc/mock/*.cfg).
-#
 # - copy this file in your ~/rpmbuild/SPECS/ directory
+#
+# - copy contrib/redhat/collectd-5-4-1-pidfile.patch
+#   into the ~/rpmbuild/SOURCES/ directory
 #
 # - fetch the desired collectd release file from https://collectd.org/files/
 #   and save it in your ~/rpmbuild/SOURCES/ directory
 #
-# - build the SRPM first:
-#   mock -r centos-6-x86_64 --buildsrpm --spec ~/rpmbuild/SPECS/collectd.spec \
-#     --sources ~/rpmbuild/SOURCES/
-#
-# - then build the RPMs:
-#   mock -r centos-6-x86_64 --no-clean --rebuild \
-#     /var/lib/mock/centos-6-x86_64/result/collectd-X.Y.Z-NN.src.rpm
-#
-# - you can also optionally enable/disable plugins which are disabled/enabled
-#   by default:
-#   mock -r centos-6-x86_64 --no-clean --without=java --with=oracle --rebuild \
-#     /var/lib/mock/centos-6-x86_64/result/collectd-X.Y.Z-NN.src.rpm
+# - then build the RPMs, from your ~/rpmbuild/SPECS/ directory:
+#   rpmbuild -ba collectd.spec
 #
 
 %global _hardened_build 1
@@ -193,7 +181,7 @@
 
 Summary:	Statistics collection daemon for filling RRD files
 Name:		collectd
-Version:	5.4.0
+Version:	5.4.1
 Release:	1%{?dist}
 URL:		http://collectd.org
 Source:		http://collectd.org/files/%{name}-%{version}.tar.bz2
@@ -206,6 +194,8 @@ Vendor:		collectd development team <collectd@verplant.org>
 Requires(post):		chkconfig
 Requires(preun):	chkconfig, initscripts
 Requires(postun):	initscripts
+
+Patch0: collectd-5-4-1-pidfile.patch
 
 %description
 collectd is a small daemon which collects system information periodically and
@@ -718,6 +708,7 @@ Development files for libcollectdclient
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %if %{with_aggregation}

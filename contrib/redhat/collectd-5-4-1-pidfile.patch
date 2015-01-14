@@ -1,0 +1,12 @@
+diff -uNr collectd-5.4.1/contrib/redhat/init.d-collectd collectd-5.4.1p/contrib/redhat/init.d-collectd
+--- collectd-5.4.1/contrib/redhat/init.d-collectd	2014-01-26 08:09:14.824391266 +0000
++++ collectd-5.4.1p/contrib/redhat/init.d-collectd	2015-01-14 03:42:00.146992781 +0000
+@@ -7,7 +7,7 @@
+ # processname: collectd
+ # config: /etc/collectd.conf
+ # config: /etc/sysconfig/collectd
+-# pidfile: /var/run/collectd.pid
++# pidfile: /var/run/collectdmon.pid
+ 
+ # Source function library.
+ . /etc/init.d/functions
